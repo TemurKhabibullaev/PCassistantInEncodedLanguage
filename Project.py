@@ -1,4 +1,4 @@
-# Голосовой ассистент КЕША 1.0 BETA
+
 import os
 import time
 import speech_recognition as sr
@@ -8,18 +8,17 @@ import datetime
 
 # настройки
 opts = {
-    "alias": ('кеша', 'кеш', 'инокентий', 'иннокентий', 'кишун', 'киш',
-              'кишаня', 'кяш', 'кяша', 'кэш', 'кэша'),
-    "tbr": ('скажи', 'расскажи', 'покажи', 'сколько', 'произнеси'),
+    "alias": ('sia', 'see', 'siaa', 'sai', 'cia'),
+    "tbr": ('tell', 'what', 'show', 'how', 'me', 'Sia', 'sia', 'cia'),
     "cmds": {
-        "ctime": ('текущее время', 'сейчас времени', 'который час'),
-        "radio": ('включи музыку', 'воспроизведи радио', 'включи радио'),
-        "stupid1": ('расскажи анекдот', 'рассмеши меня', 'ты знаешь анекдоты')
+        "ctime": ('time', 'current time', 'what time is it', 'give me the current time'),
+        "radio": ('turn on the music', 'turn on the radio', 'music', 'radio'),
+        "stupid1": ('tell me the joke', 'joke', 'make me laugh', 'laugh')
     }
 }
 
 
-# функции
+# functions
 def speak(what):
     print(what)
     speak_engine.say(what)
@@ -29,11 +28,11 @@ def speak(what):
 
 def callback(recognizer, audio):
     try:
-        voice = recognizer.recognize_google(audio, language="ru-RU").lower()
-        print("[log] Распознано: " + voice)
+        voice = recognizer.recognize_google(audio, language="en-US").lower()
+        print("[log] Identified: " + voice)
 
         if voice.startswith(opts["alias"]):
-            # обращаются к Кеше
+            # speaking with sia
             cmd = voice
 
             for x in opts['alias']:
@@ -42,14 +41,14 @@ def callback(recognizer, audio):
             for x in opts['tbr']:
                 cmd = cmd.replace(x, "").strip()
 
-            # распознаем и выполняем команду
+            # recognizing a command and executing it
             cmd = recognize_cmd(cmd)
             execute_cmd(cmd['cmd'])
 
     except sr.UnknownValueError:
-        print("[log] Голос не распознан!")
+        print("[log] I'm sorry I couldn't get you")
     except sr.RequestError as e:
-        print("[log] Неизвестная ошибка, проверьте интернет!")
+        print("[log] Unknown error, please check the internet.")
 
 
 def recognize_cmd(cmd):
@@ -67,23 +66,23 @@ def recognize_cmd(cmd):
 
 def execute_cmd(cmd):
     if cmd == 'ctime':
-        # сказать текущее время
+        # current time
         now = datetime.datetime.now()
-        speak("Сейчас " + str(now.hour) + ":" + str(now.minute))
+        speak("It's " + str(now.hour) + ":" + str(now.minute))
 
     elif cmd == 'radio':
-        # воспроизвести радио
-        os.system("D:\\Jarvis\\res\\radio_record.m3u")
+        # turning radio
+        os.system("D:\\Temur\\music mp3\\04_-_Sia_-_Move_Your_Body.mp3")
 
     elif cmd == 'stupid1':
-        # рассказать анекдот
-        speak("Мой разработчик не научил меня анекдотам ... Ха ха ха")
+        # jokes
+        speak("My developer did not teach me how to tell jokes ... Ha ha ha")
 
     else:
-        print('Команда не распознана, повторите!')
+        print('I didn\'t get you, can you repeat?')
 
 
-# запуск
+# Launch
 r = sr.Recognizer()
 m = sr.Microphone(device_index=1)
 
@@ -94,13 +93,13 @@ speak_engine = pyttsx3.init()
 
 # Только если у вас установлены голоса для синтеза речи!
 voices = speak_engine.getProperty('voices')
-speak_engine.setProperty('voice', voices[4].id)
+speak_engine.setProperty('voice', voices[1].id)
 
 # forced cmd test
-speak("Мой разработчик не научил меня анекдотам ... Ха ха ха")
+speak("Let\'s get ready!")
 
-# speak("Добрый день, повелитель")
-# speak("Кеша слушает")
+speak("Hi, I'm Sia")
+speak("I am listening to you")
 
-# stop_listening = r.listen_in_background(m, callback)
-# while True: time.sleep(0.1) # infinity loop
+stop_listening = r.listen_in_background(m, callback)
+while True: time.sleep(0.1) # infinity loop
