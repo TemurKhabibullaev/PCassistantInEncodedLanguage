@@ -6,7 +6,7 @@ from fuzzywuzzy import fuzz
 import pyttsx3
 import datetime
 
-# настройки
+# settings
 opts = {
     "alias": ('sia', 'see', 'siaa', 'sai', 'cia'),
     "tbr": ('tell', 'what', 'show', 'how', 'me', 'Sia', 'sia', 'cia'),
@@ -91,14 +91,14 @@ with m as source:
 
 speak_engine = pyttsx3.init()
 
-# Только если у вас установлены голоса для синтеза речи!
+# Voice change
 voices = speak_engine.getProperty('voices')
 speak_engine.setProperty('voice', voices[1].id)
 
 # forced cmd test
 speak("Let\'s get ready!")
 
-speak("Hi, I'm Sia")
+speak("Hi, I'm your PC")
 speak("I am listening to you")
 
 stop_listening = r.listen_in_background(m, callback)
